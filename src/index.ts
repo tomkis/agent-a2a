@@ -18,7 +18,7 @@ const helloAgentCard: AgentCard = {
   url: `http://localhost:${PORT}`,
   version: '1.0.0',
   capabilities: {
-    streaming: false,
+    streaming: true,
     pushNotifications: false,
     extensions: [{
       uri: 'https://a2a-extensions.agentstack.beeai.dev/ui/agent-detail/v1',
@@ -45,15 +45,24 @@ class HelloExecutor implements AgentExecutor {
       }
     }
 
-    const responseMessage: Message = {
-      kind: 'message',
-      messageId: uuidv4(),
-      role: 'agent',
-      parts: [{ kind: 'text', text: `Hello ${name}` }],
-      contextId: contextId,
-    };
+    const fullText = `Hello ${name}`;
+    const messageId = uuidv4();
 
-    eventBus.publish(responseMessage);
+    for (let i = 0; i <= fullText.length; i++) {
+      const responseMessage: Message = {
+        kind: 'message',
+        messageId,
+        role: 'agent',
+        parts: [{ kind: 'text', text: fullText.slice(0, i) }],
+        contextId: contextId,
+        final: i === fullText.length,
+      };
+      eventBus.publish(responseMessage);
+      if (i < fullText.length) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+    }
+
     eventBus.finished();
   }
 
