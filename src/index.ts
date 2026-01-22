@@ -20,13 +20,7 @@ const helloAgentCard: AgentCard = {
   capabilities: {
     streaming: true,
     pushNotifications: false,
-    extensions: [{
-      uri: 'https://a2a-extensions.agentstack.beeai.dev/ui/agent-detail/v1',
-      required: false,
-      params: {
-        interaction_mode: 'multi-turn',
-      }
-    }]
+    extensions: []
   },
   defaultInputModes: ['text'],
   defaultOutputModes: ['text'],
