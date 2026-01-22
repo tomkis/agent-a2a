@@ -23,7 +23,9 @@ const helloAgentCard: AgentCard = {
     extensions: [{
       uri: 'https://a2a-extensions.agentstack.beeai.dev/ui/agent-detail/v1',
       required: false,
-      params: {}
+      params: {
+        interaction_mode: 'multi-turn',
+      }
     }]
   },
   defaultInputModes: ['text'],
