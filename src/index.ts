@@ -55,7 +55,6 @@ class HelloExecutor implements AgentExecutor {
         role: 'agent',
         parts: [{ kind: 'text', text: fullText.slice(0, i) }],
         contextId: contextId,
-        final: i === fullText.length,
       };
       eventBus.publish(responseMessage);
       if (i < fullText.length) {
