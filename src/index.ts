@@ -10,7 +10,7 @@ import {
   A2AExpressApp,
 } from '@a2a-js/sdk/server';
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8000;
 
 const helloAgentCard: AgentCard = {
   name: 'Hello Agent',
