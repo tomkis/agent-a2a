@@ -67,6 +67,10 @@ const app = express();
 const a2aApp = new A2AExpressApp(requestHandler);
 a2aApp.setupRoutes(app);
 
+app.get('/.well-known/agent-card.json', (req, res) => {
+  res.json(helloAgentCard);
+});
+
 app.listen(PORT, () => {
   console.log(`A2A Hello Agent running on http://localhost:${PORT}`);
 });
