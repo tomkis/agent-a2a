@@ -1,6 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { AgentCard, Message, TaskStatusUpdateEvent, TextPart } from '@a2a-js/sdk';
+import { AgentCard, Message, TextPart } from '@a2a-js/sdk';
 import {
   AgentExecutor,
   RequestContext,
@@ -18,7 +18,7 @@ const helloAgentCard: AgentCard = {
   url: `http://localhost:${PORT}`,
   version: '1.0.0',
   capabilities: {
-    streaming: true,
+    streaming: false,
     pushNotifications: false,
     extensions: []
   },
@@ -39,32 +39,15 @@ class HelloExecutor implements AgentExecutor {
       }
     }
 
-    const fullText = `Hello ${name}`;
-    const taskId = uuidv4();
+    const responseMessage: Message = {
+      kind: 'message',
+      messageId: uuidv4(),
+      role: 'agent',
+      parts: [{ kind: 'text', text: `Hello ${name}` }],
+      contextId: contextId,
+    };
 
-    for (let i = 0; i <= fullText.length; i++) {
-      const responseMessage: TaskStatusUpdateEvent = {
-        kind: 'status-update',
-        contextId,
-        final: i >= fullText.length,
-        taskId,
-        status: {
-          state: 'working',
-          message: {
-            kind: 'message',
-            messageId: uuidv4(),
-            role: 'agent',
-            parts: [{ kind: 'text', text: fullText.slice(0, i) }],
-          }
-        }
-      
-      };
-      eventBus.publish(responseMessage);
-      if (i < fullText.length) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
-    }
-
+    eventBus.publish(responseMessage);
     eventBus.finished();
   }
 
